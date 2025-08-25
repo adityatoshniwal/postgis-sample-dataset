@@ -1,17 +1,22 @@
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 CREATE TABLE capitals (
-    id integer NOT NULL,
+    id integer NOT NULL PRIMARY KEY,
     name character varying(256),
     country_id integer,
     geom geometry(Point,4326)
 );
 
 CREATE TABLE countries (
-    id integer NOT NULL,
+    id integer NOT NULL PRIMARY KEY,
     name character varying(256),
     geom geometry(MultiPolygon,4326)
 );
+
+ALTER TABLE countries.capitals
+ADD CONSTRAINT fk_capitals_countries
+FOREIGN KEY (country_id)
+REFERENCES countries.countries (id);
 
 --
 -- Data for Name: countries; Type: TABLE DATA; Schema: public; Owner: postgres
